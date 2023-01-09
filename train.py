@@ -28,6 +28,7 @@ parser = argparse.ArgumentParser(description='PyTorch Semantic-Line Training')
 parser.add_argument('--config', default="./config.yml", help="path to config file")
 parser.add_argument('--resume', default="", help='path to config file')
 parser.add_argument('--tmp', default="", help='tmp')
+parser.add_argument('--model', default="", help='path to pretrained model')
 args = parser.parse_args()
 
 assert os.path.isfile(args.config)
@@ -58,11 +59,26 @@ def main():
     model = Net(numAngle=CONFIGS["MODEL"]["NUMANGLE"], numRho=CONFIGS["MODEL"]["NUMRHO"],
                 backbone=CONFIGS["MODEL"]["BACKBONE"])
 
+
     if CONFIGS["TRAIN"]["DATA_PARALLEL"]:
         logger.info("Model Data Parallel")
         model = nn.DataParallel(model).cuda()
     else:
         model = model.cuda(device=CONFIGS["TRAIN"]["GPU_ID"])
+
+    if args.model:
+      if isfile(args.model):
+          logger.info("=> loading pretrained model '{}'".format(args.model))
+          checkpoint = torch.load(args.model)
+          if 'state_dict' in checkpoint.keys():
+              model.load_state_dict(checkpoint['state_dict'])
+          else:
+              model.load_state_dict(checkpoint)
+          logger.info("=> loaded checkpoint '{}'"
+                .format(args.model))
+      else:
+          logger.info("=> no pretrained model found at '{}'".format(args.model))
+
 
     # optimizer
     optimizer = torch.optim.Adam(

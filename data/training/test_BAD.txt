@@ -1,0 +1,7 @@
+BAD_resize_100_100/17
+BAD_resize_100_100/18
+BAD_resize_100_100/19
+BAD_resize_100_100/20
+BAD_resize_100_100/21
+BAD_resize_100_100/22
+BAD_resize_100_100/23
