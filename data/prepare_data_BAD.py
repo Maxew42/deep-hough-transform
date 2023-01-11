@@ -116,9 +116,8 @@ for idx, label_file in enumerate(labels_files):
             print(l)
 
             # We msut convert l to new size
-            l = Line([int(l.coord[1] * newH / H), int(l.coord[0] * newW / W), int(l.coord[3] * newH / H),
-                      int(l.coord[2] * newW / W)])
-            print(l)
+            # l = Line([int(l.coord[1] * newH / H), int(l.coord[0] * newW / W), int(l.coord[3] * newH / H),
+            #           int(l.coord[2] * newW / W)])
 
             theta, r = line2hough(l, numAngle=args.numangle, numRho=args.numrho, size=(newH, newW))
 
